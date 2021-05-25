@@ -1,0 +1,97 @@
+import React, { useContext ,useLayoutEffect, useEffect, useState } from 'react'
+import "bootstrap/dist/css/bootstrap.min.css";
+import {Navbar,NavItem, NavDropdown} from 'react-bootstrap'
+import Nav from 'react-bootstrap/Nav'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form' 
+import FormControl from 'react-bootstrap/FormControl'
+import { BrowserRouter as Router, Switch,useHistory, Route, Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationArrow, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { withRouter } from 'react-router-dom'; 
+import LoginForm from './LoginForm'
+import SignupForm from './SignupForm'
+import AddReview from './AddReview'
+import ShowReviews from './showreviews'
+import Restaurantprofile from './restaurantprofile'
+import EditProfile from './EditProfile'
+import Profile from './Profile'
+import NavBar2 from './NavBar2'
+import axios from 'axios'
+import ShowFriends from './ShowFriends';
+import FriendsTab from './FriendsTab';
+import LoginForm2 from './LoginForm2';
+
+function NavBar() {
+  const [user2, setUser2] = useState("Login");
+  const [email2, setEmail2] = useState("Login");
+  const [islogged, setIslogged] = useState("false");
+  const [userID, setUserID] = useState(0);
+  const [userPic, setUserPic] = useState(0);
+  
+  const [inputvalue, setInputvalue]= useState("")
+  const [test, setTest]= useState(null)
+  
+  
+  const [redirectToReferrer, setRedirectToReferrer] = useState("false")
+  useEffect(() => {
+    console.log("Nav Bar rendered")
+   
+  },[]);
+  
+  
+ 
+  const logout=() =>{
+    setIslogged("false")
+    setEmail2("Login")
+    setUser2("Login")
+    setTest(test+1)
+    
+  }
+
+    
+    return (<Router>
+        <div>
+                <>
+                <NavBar2 inputvalue={inputvalue} setInputvalue={setInputvalue} userID={userID} logout={logout} userPic={userPic} islogged={islogged} user2={user2}/>
+                <br></br>
+                <div className="auth-wrapper">
+                  <div className="auth-inner">
+                  
+                    <Switch>
+                      <Route exact path="/" >
+                      {islogged==="false" 
+                      ? <Button href="/sign-in" style={{marginLeft: '500px',borderRadius: '25px', backgroundColor:'#552624'}} ><FontAwesomeIcon icon={faLocationArrow} color="white" /> Click Here To Login So You Can Add Review</Button>
+                      :null
+                      }
+                      
+                      <ShowReviews test={test} islogged={islogged} email2={email2}/>
+                      </Route>
+                      <Route path="/sign-in" >
+                        <LoginForm  setEmail2={setEmail2} setUserPic={setUserPic} setUserID={setUserID} setIslogged={setIslogged} setUser2={setUser2} user2={user2}/>
+                         </Route>
+                      <Route path="/sign-up" component={SignupForm} />
+                      
+                      <Route path="/restaurant/:placeid" >
+                        <Restaurantprofile email2={email2} userID={userID} islogged={islogged}  inputvalue={inputvalue} />
+                      </Route>
+                      <Route path="/profilesetting" >
+                        <EditProfile email2={email2} />
+                      </Route>
+                      <Route path="/myfriends" >
+                        <FriendsTab id={userID} islogged={islogged} />
+                      </Route>
+                      <Route path="/profile/:id" >
+                        <Profile email2={email2}></Profile>
+                      </Route>
+                    </Switch>
+                    
+                  </div>
+                </div>
+              </>
+            
+        </div></Router>
+    )
+}
+
+export default NavBar
