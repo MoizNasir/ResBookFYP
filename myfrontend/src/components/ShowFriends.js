@@ -52,18 +52,19 @@ function ShowFriends({fremail}) {
       },[fremail]);
 
     return (
-        
         <div>
+        <div> 
             {ishide==="true"
                     ? null
-                    : <div >
+                    : <div style={{marginTop:'1%'}} >
                     <Jumbotron className="jumbo" fluid>
                         <Container>
-                        <img width="100" height="100" style={{position:'relative', left:'-210px', top:'-28px'}} src={'/content/'+img}></img><h1 className="title" href='#' onClick={()=>{history.push('/profile/'+ID);}}>{name}</h1>
+                        <img width="100" height="100" style={{position:'relative', left:'-140%', top:'-50%' ,}} src={'/content/'+img}></img><h1 className="title" href='#' onClick={()=>{history.push('/profile/'+ID);}}>{name}</h1>
                         </Container>
                     </Jumbotron></div>}
             
             
+        </div>
         </div>
     )
 }

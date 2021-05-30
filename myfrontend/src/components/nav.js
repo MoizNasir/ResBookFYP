@@ -4,7 +4,7 @@ function _nav1() {
     
 const divStyle = {
     
-    color: 'Blue' ,
+    color: 'Red' ,
     fontFamily: 'Times, serif',
     fontWeight: 'bold',
     fontSize: '25px'

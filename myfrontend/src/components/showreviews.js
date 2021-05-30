@@ -94,28 +94,36 @@ const handleDislikes=(id)=>{
       }; 
     
     return (
-        <div>
+        <div> 
           
-                      <br></br>
+                   
           {tags.map(tag=>(
                 <button
                 type="button"
                 className="btn toggle-btn"
                 
-                style={{backgroundColor: tag===option?'#552624':null , border:'2px solid #6F020A',color:tag===option? '#FFFFFF ':null, width:'96px' }}
+                style={{backgroundColor: tag===option?'#990505':null , border:'2px solid #6F020A',color:tag===option? '#FFFFFF ':null, width:'96px', marginTop:"2px",}}
                 onClick={()=>{handleChange(tag)}}
               >
                 <span>{tag}</span>
               </button>
               
             ))}
-          <h3 style={{borderLeft: '6px solid #1423A4', backgroundColor: '#552624', color: '#FFFFFF ' }}>Recent Reviews </h3>
-          <Jumbotron >
-                {items2.map(item=>(<div style={{marginLeft: '450px', marginRight: '450px'}} key={item.id}><MDBRow>
+          <h3 style={{borderLeft: '6px solid #4d0000', backgroundColor: '#990505', color: '#FFFFFF' , marginBottom:"0px" }}>Recent Reviews </h3>
+          
+          <Jumbotron style={{height:'100%',
+                Width: '100vw',
+                backgroundImage: "url(" + '/content/grey2.jpg' + ")",
+                backgroundPosition: 'center',
+                backgroundSize: '100%',
+                backgroundRepeat: 'repeat',
+                backgroundHeight: '100%',}}>
+
+                {items2.map(item=>(<div style={{marginLeft: '35%', marginRight: '35%'}} key={item.id}><MDBRow>
       <MDBCol>
         <MDBCard news className="my-5">
           <MDBCardBody>
-            <div className="content">
+            <div className="content" >
             <img
                 src={'/content/'+item.userpropic}
                 alt=""
@@ -135,9 +143,9 @@ const handleDislikes=(id)=>{
               <p>Tag: <FontAwesomeIcon icon={faTag} color="blue" /> {item.tag}</p>
               <p>{item.review}</p>
               <span>
-              <Button variant="primary" size="sm" onClick={()=>handleLikes(item._id)} style={{marginRight:"170px"}} active>{item.likes} Upvote
+              <Button variant="primary" size="sm" onClick={()=>handleLikes(item._id)} style={{marginRight:"50%"}} active >{item.likes} Upvote
               </Button>
-              <Button variant="primary" size="sm" onClick={()=>handleDislikes(item._id)} active>{item.dislikes} Downvote
+              <Button variant="primary" size="sm" onClick={()=>handleDislikes(item._id)} active >{item.dislikes} Downvote
               </Button>
                 
               </span>
@@ -145,7 +153,7 @@ const handleDislikes=(id)=>{
             </div>
             <hr />
             <MDBInput far icon="heart" hint="Add Reply..."  />
-            <Button variant="primary" size="sm" style={{marginLeft:"290px"}} active> Reply
+            <Button variant="primary" size="sm" style={{marginLeft:"85%"}} active> Reply
               </Button>
           </MDBCardBody>
         </MDBCard>

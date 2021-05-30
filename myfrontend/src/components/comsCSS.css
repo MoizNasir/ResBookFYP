@@ -3,9 +3,10 @@
     Width: 100vw; 
     Align-Items: center;
     Justify-Content: centre;
+    /* margin-bottom:none; */
     }
     #confirm, #delete{
-        background-color:#4267B2;
+        background-color:#990505;
         color:white;
         
         width: 100px;
@@ -17,7 +18,7 @@
         font-family:sans-serif;
       }
       #confirm2, #delete2{
-        background-color:#4267B2;
+        background-color:#990505;
         color:white;
         
         width: 200px;
@@ -45,30 +46,30 @@
         max-width: 100%;
       }
       .color-nav{
-        background-color:#552624;
+        background-color:#990505;
 
       }
       .jumbo {
         background-size: cover;
-        background-color: #21222E;
-        width: 50%;
+        background-color: #990505;
+        width: 30%;
         position: relative;
-        left: 25%;
-        border-radius: 20%;
+        left: 35%;
+        margin-top: 1%;
+        border-radius: 5%;
+       
       }
-      #ccc{Position: absolute;Left: 47%; Right: 0;
-        Bottom: 0;
-        Top: 33%;
+      #ccc{margin-left: 46%;
         text-align: center;
         line-height: 50px;
         }
         #search{
           width: 80%;
           margin-left: 10%;
-          border:black solid 2px;
+          border:#990505 2px;
           background-color: #dadada;
           text-align: center;
-          color: #17223b;
+          color: #990505;
           border-radius: 15%;
           
           }

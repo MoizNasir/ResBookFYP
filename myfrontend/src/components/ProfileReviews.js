@@ -28,8 +28,14 @@ function ProfileReviews({id,name}) {
     }, [])
     return (
         <div>
-            <h3 style={{borderLeft: '6px solid #1423A4', backgroundColor: '#5dbcd2', color: 'black' }}>View {name} Recent Reviews </h3>
-            <Jumbotron >
+            <h3 style={{borderLeft: '6px solid #4d0000', backgroundColor:'#990505', color: 'black' }}>View {name} Recent Reviews </h3>
+            <Jumbotron style={{height:'100%',
+                Width: '100vw',
+                backgroundImage: "url(" + '/content/grey2.jpg' + ")",
+                backgroundPosition: 'center',
+                backgroundSize: '100%',
+                backgroundRepeat: 'repeat',
+                backgroundHeight: '100%',}}>
                 {items.map(item=>(<div style={{marginLeft: '450px', marginRight: '450px'}} key={item._id}><MDBRow>
       <MDBCol>
         <MDBCard news className="my-5">

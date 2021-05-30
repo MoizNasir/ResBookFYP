@@ -53,23 +53,25 @@ function NavBar() {
     return (<Router>
         <div>
                 <>
-                <NavBar2 inputvalue={inputvalue} setInputvalue={setInputvalue} userID={userID} logout={logout} userPic={userPic} islogged={islogged} user2={user2}/>
-                <br></br>
+                <NavBar2 inputvalue={inputvalue} setInputvalue={setInputvalue} userID={userID} logout={logout} userPic={userPic} islogged={islogged} user2={user2} />
+               
                 <div className="auth-wrapper">
                   <div className="auth-inner">
                   
                     <Switch>
                       <Route exact path="/" >
-                      {islogged==="false" 
-                      ? <Button href="/sign-in" style={{marginLeft: '500px',borderRadius: '25px', backgroundColor:'#552624'}} ><FontAwesomeIcon icon={faLocationArrow} color="white" /> Click Here To Login So You Can Add Review</Button>
+                      {/* {islogged==="false" 
+                      ? <Button href="/sign-in" style={{marginLeft: '500px',borderRadius: '25px', backgroundColor:'#990505'}} ><FontAwesomeIcon icon={faLocationArrow} color="white" /> Click Here To Login So You Can Add Review</Button>
                       :null
-                      }
+                      } */}
                       
                       <ShowReviews test={test} islogged={islogged} email2={email2}/>
                       </Route>
-                      <Route path="/sign-in" >
+                      
+                         <Route path="/sign-in" >
                         <LoginForm  setEmail2={setEmail2} setUserPic={setUserPic} setUserID={setUserID} setIslogged={setIslogged} setUser2={setUser2} user2={user2}/>
                          </Route>
+                         
                       <Route path="/sign-up" component={SignupForm} />
                       
                       <Route path="/restaurant/:placeid" >

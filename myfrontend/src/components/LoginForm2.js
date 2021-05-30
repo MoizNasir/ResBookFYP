@@ -2,6 +2,7 @@ import React, {useState,useEffect, useMemo} from 'react'
 import { withRouter, useHistory } from 'react-router-dom'; 
 import axios from 'axios'
 import NavBar from './NavBar'
+import './loginn.css'
 function LoginForm2({props, setEmail2,setUserID,setUserPic, setUser2, user2, setIslogged }) {
 	const [email, setEmail] = useState("Profile")
     const [pass, setPass] = useState("")
@@ -76,7 +77,13 @@ function LoginForm2({props, setEmail2,setUserID,setUserPic, setUser2, user2, set
         
       });
     return (
-        <div className="container">
+
+		
+
+		
+        <div className="container" >
+
+			
 			<div className="row justify-content-center">
 				<div className="col-md-6 text-center mb-5">
 					<h2 className="heading-section"> </h2>
@@ -130,6 +137,7 @@ function LoginForm2({props, setEmail2,setUserID,setUserPic, setUser2, user2, set
 				</div>
 			</div>
 		</div>
+		
     )
 }
 

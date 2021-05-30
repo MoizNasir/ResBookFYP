@@ -5,6 +5,7 @@ import _nav1 from './components/nav'
 import AddReview from './components/AddReview'
 import Typography from '@material-ui/core/Typography';
 import NavBar from './components/NavBar'
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 
 function App() {

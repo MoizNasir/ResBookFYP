@@ -75,62 +75,112 @@ function SignupForm() {
     })
     return (
         <div style={{  
-            backgroundImage: "url(" + "https://img4.goodfon.com/wallpaper/nbig/c/61/fast-fud-pitstsa-burger-chipsy-lukovye-koltsa-kartofel-fri.jpg" + ")",
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'repeat'
+            height:'100vh',
+                Width: '100vw',
+                backgroundImage: "url(" + '/content/grey2.jpg' + ")",
+                backgroundPosition: 'center',
+                backgroundSize: '100%',
+                backgroundRepeat: 'repeat',
+                backgroundHeight: '100%',
           }}
           >
-        <div style={{width:"33%", marginLeft:"33%", backgroundColor:"#fff7f7"}}>
-            <form>
-            <div className="img" ><img width="450" height="200" src={'/content/bg-1.jpg'}></img></div>
-                <h3 style={{marginBottom:"5%", textAlign:"center"}}>Sign Up</h3>
+       
+       <div class="container"
+                     style={{position:'absolute',
+                     marginLeft:'39%', marginTop:'2%',
+     
+                }}>
+       
+        <form style={{
 
-                <div className="form-group" style={{marginBottom:"5%"}}>
-                    <label>First name</label>
+width:'350%',
+backgroundColor:'white',
+paddingBottom:"20px",
+bordercollapse:"separate",
+borderRadius:"5px",
+overflow: 'hidden',
+perspective: "1px",
+paddingBottom:"0%"
+
+
+// boxSizing:'border-box',
+// overflow: 'hidden',
+// background: '#fff',
+
+// boxShadow: '0px 10px 34px -15px rgb(0 0 0 / 24%)',
+// display: 'block',
+// fontFamily: '"Lato", Arial, sansserif',
+// fontSize: '16px',
+// lineHeight: '1.8',
+// fontWeight: 'normal',
+
+// color: 'gray',
+// position: 'relative',
+// width: '22%',
+// paddingRight: '15px',
+// // paddingLeft: '15px',
+//  marginLeft:"31%",
+
+
+
+
+
+
+}}>
+
+<div className='container-fluid login_div'>
+            <div className="img" style={{transform:'translateX(-15px)'}}><img width="110%" height="200" src={'/content/bg-1.jpg'}></img></div>
+                <h3 style={{textAlign:"left", fontFamily:'"Times New Roman", Times, serif',margin:"7%",  marginLeft:"5%", marginBottom:"4%",
+         fontweight: "lighter",     color:"#595959", fontsize: "16px",
+         lineheight:"1.8"}}>Sign Up</h3>
+
+                <div className="form-group" style={{marginBottom:"2%",margin:"5%"}}>
+                    <label style={{color:"#595959"}}>First name</label>
                     <input type="text" onChange={(e)=>{setFname(e.target.value)}} className="form-control" placeholder="First name" />
                 </div>
 
-                <div className="form-group" style={{marginBottom:"5%"}}>
-                    <label>Last name</label>
+                <div className="form-group" style={{marginBottom:"2%",margin:"5%"}}>
+                    <label style={{color:"#595959"}}>Last name</label>
                     <input type="text" onChange={(e)=>{setLname(e.target.value)}} className="form-control" placeholder="Last name" />
                 </div>
 
-                <div className="form-group" style={{marginBottom:"5%"}}>
-                    <label>Email address</label>
+                <div className="form-group" style={{marginBottom:"2%",margin:"5%"}}>
+                    <label style={{color:"#595959"}}>Email address</label>
                     <input type="email" onChange={(e)=>{setEmail(e.target.value)}} className="form-control" placeholder="Enter email" />
                 </div>
 
-                <div className="form-group" style={{marginBottom:"5%"}}>
-                    <label>Password</label>
+                <div className="form-group" style={{marginBottom:"2%",margin:"5%"}}>
+                    <label style={{color:"#595959"}}>Password</label>
                     <input type="password" onChange={(e)=>{setPass(e.target.value)}} className="form-control" placeholder="Enter password" />
                 </div>
-                <div className="form-group" style={{marginBottom:"5%"}}>
-                    <label>Day</label>
+                <div className="form-group" style={{marginBottom:"2%",margin:"5%"}}>
+                    <label style={{color:"#595959"}}>Day</label>
                     <select name="Day" onChange={(e)=>setDay(e.target.value)}>
                         {options.days.map(day=>(<option value={day}>{day}</option>))} 
                     </select>
             
-                    <label style={{marginLeft:"1%"}}>Month</label>
+                    <label style={{marginLeft:"1%", color:"#595959"}}>Month</label>
                     <select name="Month" onChange={(e)=>setMonth(e.target.value)}>
                         {options.months.map(month=>(<option value={month}>{month}</option>))} 
                     </select>
-                    <label style={{marginLeft:"1%"}}>Year</label>
+                    <label style={{marginLeft:"1%", color:"#595959"}}>Year</label>
                     <input type="year" onChange={(e)=>{setYear(e.target.value)}} style={{display:"inline-block", width:"50%"}} className="form-control" placeholder="Enter year" />
                 </div>
-                <div className="form-group" style={{marginBottom:"5%"}}>
-                    <label>Add Profile Picture </label>
+                <div className="form-group" style={{marginBottom:"5%",margin:"5%"}}>
+                    <label style={{color:"#595959"}}>Add Profile Picture </label>
                     <input style={{marginLeft:"3%"}} type="file" name="file" onChange={onIMGChangeHandler}/>
                 </div>
                 {error? <div class="alert alert-danger" role="alert">{error}</div> : null}
 
-                <button type="submit" onClick={handleChange} style={{backgroundColor:"red"}} className="btn btn-primary btn-block">Sign Up</button>
-                <p className="forgot-password text-right">
-                    Already registered <a href="/sign-in">sign in?</a>
+                <button type="submit" onClick={handleChange} style={{backgroundColor:"#bf0404" ,width:"91%" , marginLeft:"4.8%" ,marginBottom:"5%"}} className="btn btn-primary btn-block">Sign Up</button>
+                <p className="forgot-password text-right" style={{color:"#595959"}}>
+                    Already registered <a style={{color:"#bf0404"}}href="/sign-in">sign in?</a>
                 </p>
+                </div>
             </form>
+            </div>
         </div>
-        </div>
+        
     )
 }
 

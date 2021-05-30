@@ -107,7 +107,7 @@ function AddReview(props) {
     
 
     const style = {
-      backgroundColor: "#552624",
+      backgroundColor: "#990505",
       marginRight: "400px",
       marginLeft: "400px"
     };

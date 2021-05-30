@@ -4,6 +4,7 @@ import axios from 'axios'
 import ShowFriends from './ShowFriends'
 import ProfileReviews from './ProfileReviews'
 import './comsCSS.css'
+import './loginn.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { Button,Jumbotron } from 'react-bootstrap';
@@ -162,6 +163,34 @@ function Profile({email2}) {
         setItems(items.filter(review=>review._id !== id))
   
     }
+    const handleLikes=(id)=>{
+        axios.post('/increaselikes', {
+          postid: id
+          })
+          .then(function (response) {
+            console.log("Like response: ", response.data)
+            setTest(test+1)
+              
+          })
+          .catch(function (error) {
+            console.log('Error is ',error);
+          });
+    
+    }
+    const handleDislikes=(id)=>{
+      axios.post('/increasedislikes', {
+        postid: id
+        })
+        .then(function (response) {
+          console.log("Dislike response: ", response.data)
+          setTest(test+1)
+            
+        })
+        .catch(function (error) {
+          console.log('Error is ',error);
+        });
+    
+    }
     const center = {
         display: 'block',
         marginLeft: 'auto',
@@ -169,7 +198,7 @@ function Profile({email2}) {
         width: '50%'
     }
     return (
-        <div style={{alignItems: 'center',justifyContent: 'center'}} >
+        <div style={{alignItems: 'center',justifyContent: 'center', marginTop:'1%' }} >
             <div style={{textAlign: 'center'}}><img width="100" height="100" src={'/content/'+propic}></img></div>
             <h1 style={{textAlign:'center'}}>{name}</h1>
             
@@ -184,23 +213,40 @@ function Profile({email2}) {
             <div id="ccc" onClick={handleClick}><div id="confirm">Unfriend</div></div>
             :null}
             
-            <br/>
-            <br/>
-            <h3 style={{borderLeft: '6px solid #1423A4', backgroundColor: '#088190', color:'#088190'  }}>..</h3>
-            <Button onClick={()=>showFR("friends")} style={{left:'12%',top:'283px',backgroundColor: '#11204D', height: '34px', position: 'absolute'}}>View {name} Friends ({friends.length}) </Button>
-            <Button onClick={()=>showFR("posts")} style={{left:'42%',top:'283px',backgroundColor: '#11204D', height: '34px', position: 'absolute'}}>View {name} Reviews </Button>
-            <Button onClick={()=>showFR("about")} style={{left:'72%',top:'283px',backgroundColor: '#11204D', height: '34px', position: 'absolute'}}>View {name} About </Button>
+            
+            <div style={{borderLeft: '6px solid #4d0000', display:'inline-block', backgroundColor: '#990505', color:'#990505', width:'100%', marginBottom:'0%'  }}>
+            <Button onClick={()=>showFR("friends")} style={{backgroundColor: '#990505',display:'inline-block',marginLeft:'7%', height: '34px'}}>View {name} Friends ({friends.length}) </Button>
+            <Button onClick={()=>showFR("posts")} style={{backgroundColor: '#990505',display:'inline-block',marginLeft:'25%', height: '34px'}}>View {name} Reviews </Button>
+            <Button onClick={()=>showFR("about")} style={{backgroundColor: '#990505',display:'inline-block',marginLeft:'25%', height: '34px'}}>View {name} About </Button>
+            </div>
+            <div style={{  
+                height:'100vh',
+                Width: '100vw',
+                backgroundImage: "url(" + '/content/grey2.jpg' + ")",
+                backgroundPosition: 'center',
+                backgroundSize: '100%',
+                backgroundRepeat: 'repeat',
+                backgroundHeight: '100%',
+                //backgroundColor:"transparent",
+                marginTop:"0px",
+              }}>
             {showWhich==="friends"
-            ?friends.map(friend=>(
+            ?<div>{friends.map(friend=>(
             <ShowFriends fremail={friend}/>
-            ))
+            ))}</div>
             :null}
             {showWhich==="posts"
             ?(
-                <div>
-                    <h3 style={{borderLeft: '6px solid #1423A4', backgroundColor: '#5dbcd2', color: 'black' }}>View {name} Recent Reviews </h3>
-                    <Jumbotron >
-                        {items.map(item=>(<div style={{marginLeft: '450px', marginRight: '450px'}} key={item._id}><MDBRow>
+                <div style={{marginTop:'1%'}}>
+                    <h3 style={{borderLeft: '6px solid #4d0000', backgroundColor: '#990505', color: 'black' ,marginBottom:"0px"  }}>View {name} Recent Reviews </h3>
+                    <Jumbotron style={{height:'100%',
+                Width: '100vw',
+               backgroundImage: "url(" + '/content/grey2.jpg' + ")",
+                backgroundPosition: 'center',
+                backgroundSize: '100%',
+                backgroundRepeat: 'repeat',
+                backgroundHeight: '100%',}}>
+                        {items.map(item=>(<div style={{marginLeft: '35%', marginRight: '35%'}} key={item._id}><MDBRow>
               <MDBCol>
                 <MDBCard news className="my-5">
                   <MDBCardBody>
@@ -224,9 +270,9 @@ function Profile({email2}) {
                       <p>Tag: {item.tag}</p>
                       <p>{item.review}</p>
                       <span>
-                          <Button variant="primary" size="sm" style={{marginRight:"170px"}} active>{item.likes} Upvote
+                          <Button variant="primary" size="sm" onClick={()=>handleLikes(item._id)}  style={{marginRight:"50%"}} active>{item.likes} Upvote
                           </Button>
-                          <Button variant="primary" size="sm" active>{item.likes} Downvote
+                          <Button variant="primary" size="sm" onClick={()=>handleDislikes(item._id)} active>{item.dislikes} Downvote
                           </Button>
                 
               </span>
@@ -244,9 +290,9 @@ function Profile({email2}) {
             )
             :null}
             {showWhich==="about"
-            ?<About name={name} dob={dob} email={email} />
+            ?<About name={name} dob={dob} email={email}/>
             :null}
-            
+            </div>
         </div>
     )
 }

@@ -108,24 +108,24 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
     return (
         <div>
             <Navbar className="color-nav" variant="dark">
-                  <a style={{marginLeft:'-10px', marginRight:'5px'}}><img
+                  <a style={{marginLeft:'-4px', marginRight:'3px', marginTop:"-2px", marginBottom:"-2px"}}><img
                   onClick={openhome}
-                  src="/logos.jpg"
+                  src="/logoRR.jpg"
                   alt=""
-                  height={40}
-                  width={40}
-                  style={{marginRight:"10px"}}
+                  height={50}
+                  width={50}
+                  style={{marginRight:"10px" , borderStyle:"double" , borderColor:"#b30000" ,}}
                   className="rounded-circle avatar-img z-depth-1-half"
                 /></a>
                   
-                  <PlacesAutocomplete value={inputvalue} onChange={setInputvalue} searchOptions={searchOptions}  onSelect={handleInput}>
+                  <PlacesAutocomplete value={inputvalue} onChange={setInputvalue} searchOptions={searchOptions}  onSelect={handleInput} >
                         {({ getInputProps, suggestions, getSuggestionItemProps, loading })=>(
-                        <div><input {...getInputProps({placeholder:"Type Restauant"})}/>
+                        <div><input style={{backgroundColor:'white',borderRadius:'12px',border:'none'}} {...getInputProps({placeholder:"   Search Restaurant"})}/>
                           <div style={{position:"absolute", top:"100%"}}>
                             {loading?<div style={{color:"white"}}>...loading</div>:null}
                             {suggestions.map((suggestion)=>{
                               const inputstyle ={
-                                backgroundColor: suggestion.active? '#41b6e6':"#204969",
+                                backgroundColor: suggestion.active? '#800505':"#9e0808",
                                 color:"white"
                               }
                               return (<div {...getSuggestionItemProps(suggestion)} style={inputstyle}>
@@ -136,10 +136,10 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                           </div>
                         </div>
                         )}</PlacesAutocomplete>
-                  <Nav style={{position: 'absolute', left: "35%"}} className="mr-auto">
-                    <Nav.Link style={{color: 'white', marginLeft:"110%"}} onClick={openhome}><FontAwesomeIcon icon={faHome} color="white" /></Nav.Link>
-                    <Nav.Link style={{color: 'white', marginLeft:"10%"}} onClick={openFriends}><FontAwesomeIcon icon={faUsers} color="white" /></Nav.Link>
-                    <Nav.Link style={{color: 'white', marginLeft:"10%"}} onClick={openhome}><FontAwesomeIcon icon={faChartLine} color="white" /></Nav.Link>
+                  <Nav style={{marginLeft:"33%"}} className="mr-auto">
+                    <Nav.Link style={{color: 'white', fontSize:"20px"}} onClick={openhome}><FontAwesomeIcon icon={faHome} color="white" /></Nav.Link>
+                    <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} onClick={openFriends}><FontAwesomeIcon icon={faUsers} color="white" /></Nav.Link>
+                    <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} onClick={openhome}><FontAwesomeIcon icon={faChartLine} color="white" /></Nav.Link>
                     </Nav>
                   {islogged==="true" 
                   ? null
@@ -148,7 +148,7 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                     </Nav>
                     }
                   
-                  <Nav style={{position: 'absolute', right: 15}} className="mr-auto">
+                  <Nav style={{position: 'absolute', right: 15, top:9}} className="mr-auto">
                   
                   {islogged==="true"
                   ?<Nav.Link onClick={openProfile} style={{color: 'white'}} ><img
@@ -174,7 +174,7 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                     
                   </Nav>
                 </Navbar>
-                {inputvalue==""?null:<div><br></br><br></br><br></br><br></br></div>}
+                {inputvalue==""?null:<div></div>}
         </div>
     )
 }
