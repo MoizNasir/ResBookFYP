@@ -3,15 +3,14 @@ const require = createRequire(import.meta.url);
 const express = require('express')
 var request =require('request')
 const app = express()
+require('dotenv').config()
 
 const bcrypt = require("bcrypt")
 
 var bodyParser = require('body-parser')
 const saltRounds = 10;
 const port = 5000
-const vari = "haris"
 var cors = require('cors')
-var url = "mongodb://localhost:27017/Reacttest";
 app.use(cors())
 /*const mongoose = require('mongoose'); 
  var hrscema = new mongoose.Schema({
@@ -376,7 +375,7 @@ app.post('/updatesetting',upload, async function (req, res) {
     "lastname":updatedprofile.lastname,
     "email":updatedprofile.email,
     "propic":req.file.filename,
-    "password":hash,
+    "password":hash
   }}
    db.collection('details').findOneAndUpdate({"email": updatedprofile.oemail},data, function(err, collection){ 
     if (err) throw err; 
@@ -478,6 +477,7 @@ db.collection('details').findOne({ email: countValue.email }, function(err, coll
           message: 'Correct Details',
           fname: collection.firstname,
           lname: collection.lastname,
+          email: collection.email,
           id:collection._id,
           propic: collection.propic
         });

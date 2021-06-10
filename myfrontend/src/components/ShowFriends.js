@@ -59,7 +59,7 @@ function ShowFriends({fremail}) {
                     : <div style={{marginTop:'1%'}} >
                     <Jumbotron className="jumbo" fluid>
                         <Container>
-                        <img width="100" height="100" style={{position:'relative', left:'-140%', top:'-50%' ,}} src={'/content/'+img}></img><h1 className="title" href='#' onClick={()=>{history.push('/profile/'+ID);}}>{name}</h1>
+                        <img width="100" height="100" style={{position:'relative', left:'-140%', top:'-50%' ,}} src={'/content/'+img}></img><a className="title" href={'/profile/'+ID}>{name}</a>
                         </Container>
                     </Jumbotron></div>}
             

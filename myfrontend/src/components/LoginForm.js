@@ -43,6 +43,7 @@ function LoginForm({props, setEmail2,setUserID,setUserPic, setUser2, user2, setI
             setUserID(response.data.id)
             setUserPic(response.data.propic)
             setIslogged("true")
+            localStorage.setItem('data', JSON.stringify(response.data))
             console.log("We know evertything now after submission", email)
             history.push('/');
 

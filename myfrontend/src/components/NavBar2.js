@@ -138,7 +138,7 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                         )}</PlacesAutocomplete>
                   <Nav style={{marginLeft:"33%"}} className="mr-auto">
                     <Nav.Link style={{color: 'white', fontSize:"20px"}} onClick={openhome}><FontAwesomeIcon icon={faHome} color="white" /></Nav.Link>
-                    <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} onClick={openFriends}><FontAwesomeIcon icon={faUsers} color="white" /></Nav.Link>
+                    <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} href={'/myfriends'}><FontAwesomeIcon icon={faUsers} color="white" /></Nav.Link>
                     <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} onClick={openhome}><FontAwesomeIcon icon={faChartLine} color="white" /></Nav.Link>
                     </Nav>
                   {islogged==="true" 

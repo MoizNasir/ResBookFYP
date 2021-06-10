@@ -21,13 +21,14 @@ import axios from 'axios'
 import ShowFriends from './ShowFriends';
 import FriendsTab from './FriendsTab';
 import LoginForm2 from './LoginForm2';
-
+const data = JSON.parse(localStorage.getItem('data'))
+console.log("Local Storage: ",data)
 function NavBar() {
-  const [user2, setUser2] = useState("Login");
-  const [email2, setEmail2] = useState("Login");
-  const [islogged, setIslogged] = useState("false");
-  const [userID, setUserID] = useState(0);
-  const [userPic, setUserPic] = useState(0);
+  const [user2, setUser2] = useState(data?data.fname+' '+data.lname:"Login");
+  const [email2, setEmail2] = useState(data?data.email:"Login");
+  const [islogged, setIslogged] = useState(data?"true":"false");
+  const [userID, setUserID] = useState(data?data.id:0);
+  const [userPic, setUserPic] = useState(data?data.propic:0);
   
   const [inputvalue, setInputvalue]= useState("")
   const [test, setTest]= useState(null)
@@ -35,6 +36,7 @@ function NavBar() {
   
   const [redirectToReferrer, setRedirectToReferrer] = useState("false")
   useEffect(() => {
+    console.log(process.env.TEST)
     console.log("Nav Bar rendered")
    
   },[]);
@@ -45,7 +47,10 @@ function NavBar() {
     setIslogged("false")
     setEmail2("Login")
     setUser2("Login")
+    setUserID(0)
+    setUserPic(0)
     setTest(test+1)
+    localStorage.clear();
     
   }
 

@@ -5,8 +5,8 @@ const axios = require('axios')
 const express = require('express')
 const app = express()
 const port = 5000
+require('dotenv').config()
 const key = process.env.GOOGLE_API_KEY
-process.env.GOOGLE_API_KEY='AIzaSyD2XSZc3WH7MdfoOz5JdBcyIjRRl4cjd_c'
 import db from './config/dbconfig.js'
 
 /*app.get('/checkduplicates', async (req, res, next) => {
@@ -39,9 +39,9 @@ app.get('/restaurants', async (req, res, next) => {
    const borough = 'manhattan'
    const address = 'English+Tea+House+F-7/2+F+7/2+F-7,+Islamabad,+Islamabad+Capital+Territory,+Pakistan'
    const {data} = await axios.get(
-   //https://maps.googleapis.com/maps/api/place/textsearch/json?query=${address}&type=restaurant&key=${'AIzaSyAyJqPTlSCuiGX5H10JVxrYEF5rVPRgzE4'}
-   //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.7195361,73.0529528&radius=200&type=restaurant&key=AIzaSyAyJqPTlSCuiGX5H10JVxrYEF5rVPRgzE4
-`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.6973781,73.0103748&radius=400&type=restaurant&key=AIzaSyAyJqPTlSCuiGX5H10JVxrYEF5rVPRgzE4`
+   //https://maps.googleapis.com/maps/api/place/textsearch/json?query=${address}&type=restaurant&key=${${process.env.GOOGLE_API_KEY}}
+   //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.7195361,73.0529528&radius=200&type=restaurant&key=${process.env.GOOGLE_API_KEY}
+`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.6973781,73.0103748&radius=400&type=restaurant&key=${process.env.GOOGLE_API_KEY}`
    )
    console.log(data.results.length)
    console.log(data.next_page_token)
@@ -91,7 +91,7 @@ async function  excutenextquery(token) {
     console.log("got token",token)
     const {data2} = await axios.get(
       
-   `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.6973781,73.0103748&radius=400&type=restaurant&key=AIzaSyAyJqPTlSCuiGX5H10JVxrYEF5rVPRgzE4&pagetoken=${token}`
+   `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=33.6973781,73.0103748&radius=400&type=restaurant&key=${process.env.GOOGLE_API_KEY}&pagetoken=${token}`
       )
       if(data2){
         console.log(data2.results.length)

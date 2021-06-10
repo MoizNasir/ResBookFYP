@@ -200,7 +200,7 @@ function Restaurantprofile({email2,userID, islogged, inputvalue, searchres}) {
                 height={40}
                 className="rounded-circle avatar-img z-depth-1-half"
               />
-              <a href='#' onClick={()=>{history.push('/profile/'+item.userid);}}>{item.user}</a>{item.user===email2?<button style={{float:"right"}} onClick={()=>handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt}  color="red" /></button>:null}
+              <a href={'/profile/'+item.userid}>{item.user}</a>{item.user===email2?<button style={{float:"right"}} onClick={()=>handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt}  color="red" /></button>:null}
               <div className="left-side-meta">{item.date}</div>
               
             </div>
@@ -208,7 +208,7 @@ function Restaurantprofile({email2,userID, islogged, inputvalue, searchres}) {
           
           <MDBCardBody>
             <div className="social-meta">
-              <a>Restaurant: </a><a href="#" onClick={()=>{history.push('/restaurant/'+item.placeid);}}>{item.resname}</a>
+              <a>Restaurant: </a><a href={'/restaurant/'+item.placeid}>{item.resname}</a>
               <p>Rated: <FontAwesomeIcon icon={faStar} color="yellow" /> {item.rate}/10 </p>
               <p>Tag: <FontAwesomeIcon icon={faTag} color="blue" /> {item.tag}</p>
               <p>{item.review}</p>

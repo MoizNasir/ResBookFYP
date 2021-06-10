@@ -26,7 +26,8 @@ function EditProfile({email2}) {
                 console.log("Aey te error hai bro")
             })
     }
-    const updatesetting=()=>{
+    const updatesetting=(e)=>{
+        e.preventDefault()
         console.log("EMail in signup form",email)
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if(pattern.test(email)){
@@ -91,7 +92,7 @@ function EditProfile({email2}) {
                 </div>
                 {error? <div class="alert alert-danger" role="alert">{error}</div> : null}
 
-                <button type="submit" onClick={e => {e.preventDefault();updatesetting()}} className="btn btn-primary btn-block">Update Settings</button>
+                <button type="submit" onClick={e => {e.preventDefault();updatesetting(e)}} className="btn btn-primary btn-block">Update Settings</button>
                 {success? <div class="alert alert-success" role="alert">{success}</div> : null}
             </form>
         </div>

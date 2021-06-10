@@ -3,11 +3,11 @@ const require = createRequire(import.meta.url);
 const mongoose = require('mongoose'); 
  
  mongoose.Promise = global.Promise;
- 
- mongoose.connect('mongodb+srv://hariskiller:y2rh9zDeCxajtVkx@cluster0.9zwax.mongodb.net/myFirstDatabase?retryWrites=true/ResBook', {
-  dbName: 'ResBook',
-  user: 'hariskiller',
-  pass: 'y2rh9zDeCxajtVkx',
+ require('dotenv').config()
+ mongoose.connect('mongodb+srv://${process.env.user}:${process.env.PASS}@cluster0.9zwax.mongodb.net/myFirstDatabase?retryWrites=true/ResBook', {
+  dbName: process.env.DB_NAME,
+  user: process.env.USER,
+  pass: process.env.PASS,
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
