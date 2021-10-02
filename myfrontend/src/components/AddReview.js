@@ -61,7 +61,7 @@ function AddReview(props) {
 
     const addItem=()=>{
       
-      console.log("User email in AR: ", props.email2, props.userid, selectedOption2)
+      console.log("User email in AR: ", props.email2, props.userid, selectedOption2, props.res)
       const URL = "http://localhost:5000/additem";
       var data2 ={
         user: props.email2,
@@ -126,6 +126,7 @@ function AddReview(props) {
     };
     useEffect(() => {
       console.log("Tags are",tags)
+      console.log("props.res are",props.res)
   }, [])
   const ratingChanged = (newRating) => {
     setRating(newRating)

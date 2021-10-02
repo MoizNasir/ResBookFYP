@@ -8,9 +8,10 @@ function FriendsTab({id,islogged}) {
     const [friends2, setFriends2] = useState([])
     let history = useHistory();
     const getFriends=async(id)=>{
-        await axios.get('http://localhost:5000/'+id)
+        console.log("getting friends of", id)
+        await axios.get('http://localhost:5000/user/'+id)
             .then(response => {
-                console.log("Opened Profile Info: ",response.data.friends)
+                console.log("Opened Profile Info: ",response.data)
                 setFriends(response.data.friends)
                 setFriends2(response.data.friends)
             })
@@ -40,7 +41,7 @@ function FriendsTab({id,islogged}) {
     }, [])
     return (
         <div>
-            <h3 style={{borderLeft: '6px solid #1423A4', backgroundColor: '#552624', color: '#FFFFFF ' }}>{friends.length} Friends</h3>
+            <h3 style={{borderLeft: '6px solid #1423A4', backgroundColor: '#552624', color: '#FFFFFF ' }}>{friends?friends.length:null} Friends</h3>
             <div><input type="text" id="search" placeholder="Search Friend..." onChange={searchHandler}/></div>
             {friends.map(friend=>(
             <ShowFriends fremail={friend}/>

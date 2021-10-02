@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import {  MDBRow,  MDBCard, MDBCardBody, MDBBtn, MDBIcon, MDBCol, MDBCardImage, MDBInput} from "mdbreact";
-import Button from 'react-bootstrap/Button'
-import Jumbotron from 'react-bootstrap/Jumbotron'
-import { withRouter, useHistory} from 'react-router-dom'; 
+import React, {useState,useEffect} from 'react'
+import {useParams,withRouter, useHistory} from "react-router-dom";
+import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faLocationArrow, faTag, faMapMarkerAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
-import { tags } from "./tags";
-import ReactStars from 'react-stars'
-import axios from 'axios'
-
-function ShowReviews({test,userID, islogged, email2}) {
-    const [items, setItems]=useState([])
-    const [items2, setItems2]=useState([])
-    const [writingcomment, setWritingcomment]=useState([])
-    const [test2, setTest2]=useState(test)
-    const [update, setUpdate]=useState(0)
-    const [option, setOption]=useState('All')
-  
+import { Button,Jumbotron } from 'react-bootstrap';
+import {  MDBRow,  MDBCard, MDBCardBody, MDBBtn, MDBIcon, MDBCol, MDBCardImage, MDBInput} from "mdbreact";
+function Review({email2, userID}) {
+    let params = useParams();
     let history = useHistory();
-    
-    const handleChange=(tag) =>{
-      setOption(tag)
-      if(tag=='All'){
-        setItems2(items)
-    }else{
-      setItems2(items.filter(item=>item.tag == tag))
-    }
-
-      }
-      const onChange=(e, id) =>{
+    const [item, setItem] = useState(null)
+    const [test, setTest] = useState(null)
+    const [writingcomment, setWritingcomment]=useState([])
+    const onChange=(e, id) =>{
         console.log(e.target.value," and postid ", id)
         const comment={
           postid: id,
@@ -85,127 +68,103 @@ function ShowReviews({test,userID, islogged, email2}) {
         
   
     }
-    useEffect(()=>{
-        axios.get('http://localhost:5000/getreviews')
+    const getReview=(id)=>{
+        axios.get('http://localhost:5000/review/'+id)
             .then(response => {
-              console.log(response.data)
-                setItems(response.data);
-                setItems2(response.data)
-                console.log("API got all reviews bro")
-                
+                console.log("Opened Review Info: ",response.data)
+                setItem(response.data)
             })
             .catch(function (error){
                 console.log(error);
                 console.log("Aey te error hai bro")
             })
+    }
+    const isinlikedby=(likes)=>{
+  
+        if(likes){
+          console.log(likes.includes(email2))
+          return likes.includes(email2)
+        }else{
+          return false
+        }
+        
+      
+        
+        
+      }
+    const isindislikedby=(dislikes)=>{
+        
+        if(dislikes){
+          console.log(dislikes.includes(email2))
+          return dislikes.includes(email2)
+        }else{
+          return false
+        }
+        
+      
+        
+        
+      }
+      const handleDelete=(id)=>{
+        axios.post('/deletereview', {
+            id: id
+          })
+          .then(function (response) {
+              
+          })
+          .catch(function (error) {
+            console.log('Error is ',error);
+          });
+  
+    }
+    const handleLikes=(id)=>{
+        axios.post('/increaselikes', {
+          postid: id,
+          likedby: email2
+          })
+          .then(function (response) {
+            console.log("Like response: ", response.data)
+            setTest(test+1)
+              
+          })
+          .catch(function (error) {
+            console.log('Error is ',error);
+          });
     
-    
-
-    },[test2,update])
-    
-    const handleDelete=(id)=>{
-      axios.post('/deletereview', {
-          id: id
+    }
+    const handleDislikes=(id)=>{
+      axios.post('/increasedislikes', {
+        postid: id,
+        dislikedby: email2
         })
         .then(function (response) {
+          console.log("Dislike response: ", response.data)
+          setTest(test+1)
             
         })
         .catch(function (error) {
           console.log('Error is ',error);
         });
-      setItems2(items2.filter(review=>review._id !== id))
-
-  }
-  const handleLikes=(id)=>{
-    axios.post('/increaselikes', {
-      postid: id,
-      likedby: email2
-      })
-      .then(function (response) {
-        console.log("Like response: ", response.data)
-        setUpdate(update+1)
-          
-      })
-      .catch(function (error) {
-        console.log('Error is ',error);
-      });
-
-}
-const handleDislikes=(id)=>{
-  axios.post('/increasedislikes', {
-    postid: id,
-    dislikedby: email2
-    })
-    .then(function (response) {
-      console.log("Dislike response: ", response.data)
-      setUpdate(update+1)
-        
-    })
-    .catch(function (error) {
-      console.log('Error is ',error);
-    });
-
-}
-const isinlikedby=(likes)=>{
-  
-  if(likes){
-    console.log(likes.includes(email2))
-    return likes.includes(email2)
-  }else{
-    return false
-  }
-  
-
-  
-  
-}
-const isindislikedby=(dislikes)=>{
-  
-  if(dislikes){
-    console.log(dislikes.includes(email2))
-    return dislikes.includes(email2)
-  }else{
-    return false
-  }
-  
-
-  
-  
-}
-    const style4 = {
-        backgroundColor: "grey",
-        color: "white",
-        marginRight: "400px",
-        marginLeft: "400px"
-      }; 
     
+    }
+    useEffect(() => {
+        console.log("We opening profile"+ params.reviewid+"Logged user email: "+email2)
+        getReview(params.reviewid)
+        
+    }, [params, test])
+    if(item){
     return (
-        <div> 
-          
-                   
-          {tags.map(tag=>(
-                <button
-                type="button"
-                className="btn toggle-btn"
-                
-                style={{backgroundColor: tag===option?'#990505':null , border:'2px solid #6F020A',color:tag===option? '#FFFFFF ':null, width:'96px', marginTop:"2px",}}
-                onClick={()=>{handleChange(tag)}}
-              >
-                <span>{tag}</span>
-              </button>
-              
-            ))}
-          <h3 style={{borderLeft: '6px solid #4d0000', backgroundColor: '#990505', color: '#FFFFFF' , marginBottom:"0px" }}>Recent Reviews </h3>
-          
-          <Jumbotron style={{height:'100%',
-                Width: '100vw',
+        <div>
+            <Jumbotron style={ { height:'100%',
+                Width: '100%',
                 backgroundImage: "url(" + '/content/grey2.jpg' + ")",
                 backgroundPosition: 'center',
                 backgroundSize: '100%',
                 backgroundRepeat: 'repeat',
-                backgroundHeight: '100%',}}>
-
-                {items2.map(item=>(<div style={{marginLeft: '35%', marginRight: '35%'}} key={item.id}><MDBRow>
+                backgroundHeight: '100%',
+                //backgroundColor:"transparent",
+                marginTop:"0px"}} >
+            <div style={{marginLeft: '35%', marginRight: '35%'}} key={item.id}><MDBRow>
       <MDBCol>
         <MDBCard news className="my-5">
           <MDBCardBody>
@@ -216,8 +175,8 @@ const isindislikedby=(dislikes)=>{
                 height={40}
                 className="rounded-circle avatar-img z-depth-1-half"
               />
-              <a style={{marginLeft:'2%'}} href={'/profile/'+item.userid._id}>{item.userid.firstname+' '+item.userid.lastname}</a>{item.userid.email===email2?<button style={{float:"right"}} onClick={()=>handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt}  color="red" /></button>:null}
-              <div className="left-side-meta"><a href={'/review/'+item._id}>{item.date}...</a></div>
+              <a href={'/profile/'+item.userid._id}>{item.userid.firstname+' '+item.userid.lastname}</a>{item.userid.email===email2?<button style={{float:"right"}} onClick={()=>handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt}  color="red" /></button>:null}
+              <div className="left-side-meta">{item.date}</div>
               
             </div>
           </MDBCardBody>
@@ -260,11 +219,17 @@ const isindislikedby=(dislikes)=>{
           </MDBCardBody>
         </MDBCard>
       </MDBCol>
-    </MDBRow></div>))}
-            
-    </Jumbotron>
+            </MDBRow></div>
+            </Jumbotron>
+        </div>
+    )
+}else{
+    return (
+        <div>
+            <h1>Review Loading...</h1>
         </div>
     )
 }
+}
 
-export default withRouter(ShowReviews)
+export default Review

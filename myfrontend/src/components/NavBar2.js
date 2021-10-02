@@ -12,11 +12,13 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
-import { faUserAlt, faSignInAlt, faUserLock, faHome, faUsers, faChartLine, faBell } from '@fortawesome/free-solid-svg-icons'
+import { faUserAlt, faSignInAlt, faUserLock, faHome, faUsers, faChartLine, faBell, faFlagCheckered } from '@fortawesome/free-solid-svg-icons'
 function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputvalue}) {
     let history = useHistory();
     const [FR, setFR]= useState([])
+    const [notifications, setNotifications]= useState([])
     const [FRL, setFRL]= useState(0)
+    const [isshownotifications, setIsshownotifications]= useState(false)
     const opensettings=()=>{
         setInputvalue("")
         history.push('/profilesetting');
@@ -30,6 +32,10 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
       history.push('/profile/'+userID);
       
       }
+      const openN=()=>{
+        setIsshownotifications(!isshownotifications)
+        
+        }
       
   
     const openhome=()=>{
@@ -40,20 +46,20 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
       setInputvalue("")
       history.push('/myfriends');
     }
-    const getFRandNotifications=()=>{
-      console.log("getting friend requests")
-      axios.get('http://localhost:5000/'+userID)
-            .then(response => {
-                console.log("Recieve Requests: ",response.data.recievedRequests)
-                console.log(response.data.recievedRequests.length)
-                setFR(response.data.recievedRequests)
-                setFRL(response.data.recievedRequests.length)
-            })
-            .catch(function (error){
-                console.log(error);
-                console.log("Aey te error hai bro")
-            })
-          }
+    const getFRandNotifications=async()=>{
+      console.log("getting notifications")
+      
+        await axios.get('http://localhost:5000/notifications/'+userID)
+        .then(response => {
+            console.log(response.data)
+            setNotifications(response.data)
+        })
+        .catch(function (error){
+            console.log(error);
+            console.log("Aey te error hai bro")
+        })
+    
+    }
           
           
     useEffect(() => {
@@ -105,6 +111,17 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
       
       setInputvalue(value)
     }
+    const onChangeValue=(event)=> {
+      console.log(event.target.value);
+      if(event.target.value===""){
+        console.log("its null")
+        history.push('/');
+      }else{
+        history.push('/search/'+event.target.value);
+
+      }
+      
+    }
     return (
         <div>
             <Navbar className="color-nav" variant="dark">
@@ -136,7 +153,12 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                           </div>
                         </div>
                         )}</PlacesAutocomplete>
-                  <Nav style={{marginLeft:"33%"}} className="mr-auto">
+                        {islogged==="true"?
+                        <Form inline>
+                    <FormControl style={{backgroundColor:'white',borderRadius:'12px',border:'none', marginLeft:'22%', height:'0.5%'}} onChange={onChangeValue} type="text" placeholder="Search User" className="mr-sm-2" />
+                  </Form>:null}
+                  
+                  <Nav style={{marginLeft:islogged==="true"?"19%":"30%"}} className="mr-auto">
                     <Nav.Link style={{color: 'white', fontSize:"20px"}} onClick={openhome}><FontAwesomeIcon icon={faHome} color="white" /></Nav.Link>
                     <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} href={'/myfriends'}><FontAwesomeIcon icon={faUsers} color="white" /></Nav.Link>
                     <Nav.Link style={{color: 'white', marginLeft:"10%" , fontSize:"20px"}} onClick={openhome}><FontAwesomeIcon icon={faChartLine} color="white" /></Nav.Link>
@@ -160,7 +182,7 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                 />{user2}</Nav.Link>
                   :null}
                   {islogged==="true"
-                  ?<Nav.Link style={{color: 'white'}} ><FontAwesomeIcon icon={faBell} color="white" /></Nav.Link>
+                  ?<Nav.Link style={{color: 'white'}} onClick={openN} ><FontAwesomeIcon icon={faBell} color="white" /></Nav.Link>
                   :null}
                     
                     
@@ -175,6 +197,21 @@ function NavBar2({userID,logout,userPic, islogged, user2, inputvalue, setInputva
                   </Nav>
                 </Navbar>
                 {inputvalue==""?null:<div></div>}
+                {isshownotifications?notifications.length>0?<div style={{float:'right',backgroundColor:'white', width:'20%'}}>
+                  <h1 style={{backgroundColor:'#e41749', color:'#fff1c1', textAlign:'center'}}><FontAwesomeIcon icon={faFlagCheckered} color="white" /> Notifications</h1>
+                  {notifications.map(notification=>(
+                  notification.type=="Post"?<div style={{marginBottom:'4%',  padding:'1%'}} ><img
+                  src={'/content/'+notification.userid.propic}
+                  alt=""
+                  height={30}
+                  style={{marginRight:"10px"}}
+                  className="rounded-circle avatar-img z-depth-1-half"
+                /><a style={{ color:'black', padding:'2%', marginTop:'5%'}} href={'/review/'+notification.id}>{notification.userid.firstname+' '+notification.userid.lastname} liked your post</a><br></br></div>:
+                  notification.type=="Request"?<div><a style={{ color:'black', padding:'2%', marginTop:'5%'}} href={'/profile/'+notification.id}>{notification.userid.firstname+' '+notification.userid.lastname} sent you a friend request</a><br></br></div>:
+                  <div><a style={{ color:'black', padding:'2%', marginTop:'5%'}} href={'/profile/'+notification.id}>{notification.userid.firstname+' '+notification.userid.lastname} accepted your a friend request</a><br></br></div>
+                  ))}
+                  
+                </div>:<div style={{float:'right',backgroundColor:'white', width:'20%'}}><a>No Notifications</a></div>:null}
         </div>
     )
 }

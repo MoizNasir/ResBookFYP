@@ -6,27 +6,33 @@ import ProfileReviews from './ProfileReviews'
 import './comsCSS.css'
 import './loginn.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faTrashAlt, faGrinAlt, faSmile, faAngry } from '@fortawesome/free-solid-svg-icons'
 import { Button,Jumbotron } from 'react-bootstrap';
 import {  MDBRow,  MDBCard, MDBCardBody, MDBBtn, MDBIcon, MDBCol, MDBCardImage, MDBInput} from "mdbreact";
 import About from './about'
-function Profile({email2}) {
+function Profile({email2, userID}) {
     let history = useHistory();
     let params = useParams();
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [dob, setDob] = useState("")
+    const [selectedSentiment, setSelectedSentiment] = useState("")
     const [friends, setFriends] = useState([])
     const [showWhich, setShowWhich] = useState("posts")
-    const [propic, setPropic] = useState("")
+    const [isloaded, setIsloaded] = useState(false)
+    const [propic, setPropic] = useState(null)
     const [test, setTest] = useState(0)
+    const [writingcomment, setWritingcomment]=useState([])
     const [profilestatus, setProfilestatus] = useState("Not Anything")
     const [items, setItems]=useState([])
+    const [backupitems, setBackupitems]=useState([])
     const getReviews=async()=>{
-        await axios.get('http://localhost:5000/getreviews')
+        await axios.get('http://localhost:5000/getpreviews/'+params.id)
         .then(response => {
             console.log(response.data)
-            setItems(response.data.filter(item=>item.userid == params.id))
+            setItems(response.data)
+            setBackupitems(response.data)
+            setIsloaded(true)
             console.log("Application got profile reviews bro")
         })
         .catch(function (error){
@@ -35,7 +41,7 @@ function Profile({email2}) {
         })
     }
     const getProfile=(id)=>{
-        axios.get('http://localhost:5000/'+id)
+        axios.get('http://localhost:5000/user/'+id)
             .then(response => {
                 console.log("Opened Profile Info: ",response.data)
                 setName(response.data.firstname+' '+response.data.lastname)
@@ -103,6 +109,18 @@ function Profile({email2}) {
     const showFR=(string)=>{
         setShowWhich(string)
     }
+    const SetSentimentsl=(string)=>{
+      console.log(string)
+      if(selectedSentiment==string){
+        setSelectedSentiment("")
+        setItems(backupitems)
+      }else{
+        setSelectedSentiment(string)
+        setItems(backupitems.filter(review=>review.sentiment == string))
+
+      }
+      
+  }
     const handleClick=()=>{
         console.log("Lets do work "+profilestatus)
         
@@ -130,6 +148,15 @@ function Profile({email2}) {
           }}
         
         axios(options).then(response => {
+          console.log("change test value")
+          setTest(test+1)
+            console.log("Entered CONNN")
+            if(profilestatus==="Friend"){
+                setProfilestatus("Not Anything")
+            }
+            if(profilestatus==="Sent Friend"){
+                setProfilestatus("Not Anything")
+            }
             
           
         })
@@ -139,15 +166,7 @@ function Profile({email2}) {
             
             console.log("Error is: ",error.response)
         });
-        console.log("change test value")
-        setTest(test+1)
-            console.log("Entered CONNN")
-            if(profilestatus==="Friend"){
-                setProfilestatus("Not Anything")
-            }
-            if(profilestatus==="Sent Friend"){
-                setProfilestatus("Not Anything")
-            }
+        
 
     }
     const handleDelete=(id)=>{
@@ -165,7 +184,8 @@ function Profile({email2}) {
     }
     const handleLikes=(id)=>{
         axios.post('/increaselikes', {
-          postid: id
+          postid: id,
+          likedby: email2
           })
           .then(function (response) {
             console.log("Like response: ", response.data)
@@ -179,7 +199,8 @@ function Profile({email2}) {
     }
     const handleDislikes=(id)=>{
       axios.post('/increasedislikes', {
-        postid: id
+        postid: id,
+        dislikedby: email2
         })
         .then(function (response) {
           console.log("Dislike response: ", response.data)
@@ -191,12 +212,105 @@ function Profile({email2}) {
         });
     
     }
+    const isinlikedby=(likes)=>{
+  
+        if(likes){
+          console.log(likes.includes(email2))
+          return likes.includes(email2)
+        }else{
+          return false
+        }
+        
+      
+        
+        
+      }
+      const onChange=(e, id) =>{
+        console.log(e.target.value," and postid ", id)
+        const comment={
+          postid: id,
+          comment: e.target.value
+        }
+        var updates=writingcomment
+        const objIndex = updates.findIndex((obj => obj.postid == id));
+        if(objIndex<0){
+          const comment={
+            postid: id,
+            comment: e.target.value
+          }
+          updates=[...writingcomment,comment]
+
+        }else{
+          //Log object to Console.
+          console.log("Before update: ", updates[objIndex], "also index",objIndex)
+          //Update object's name property.
+          updates[objIndex].comment = e.target.value
+          //Log object to console again.
+          console.log("After update: ", updates[objIndex])
+
+        }
+        
+        setWritingcomment(updates)
+      }
+      const postComment=(id)=>{
+        var updates=writingcomment
+        const objIndex = updates.findIndex((obj => obj.postid == id));
+        if(objIndex<0){
+          alert("You posting empty comment")
+
+        }else{
+          //Log object to Console.
+          console.log("Before update: ", updates[objIndex], "also index",objIndex)
+          //Update object's name property.
+          console.log("comment: ",updates[objIndex].comment)
+          axios.post('/addcomment', {
+            postid: id,
+            userid: userID,
+            comment: updates[objIndex].comment
+          })
+          .then(function (response) {
+            console.log(response.data)
+            history.push('/review/'+response.data.postid);
+              
+          })
+          .catch(function (error) {
+            console.log('Error is ',error);
+          });
+
+        }
+        
+        
+  
+    }
+      const isindislikedby=(dislikes)=>{
+        
+        if(dislikes){
+          console.log(dislikes.includes(email2))
+          return dislikes.includes(email2)
+        }else{
+          return false
+        }
+        
+      
+        
+        
+      }
     const center = {
         display: 'block',
         marginLeft: 'auto',
         marginRight: 'auto',
         width: '50%'
     }
+    if(!isloaded){
+      return(
+        <div style={{borderLeft: '6px solid #4d0000', display:'inline-block', backgroundColor: '#990505', width:'100%', marginTop:'0%' }}>
+          <h1 style={{color:'white'}}>Profile Loading...</h1>
+        </div>
+      )
+
+    }else{
+
+    
     return (
         <div style={{alignItems: 'center',justifyContent: 'center', marginTop:'1%' }} >
             <div style={{textAlign: 'center'}}><img width="100" height="100" src={'/content/'+propic}></img></div>
@@ -238,7 +352,7 @@ function Profile({email2}) {
             {showWhich==="posts"
             ?(
                 <div style={{marginTop:'1%'}}>
-                    <h3 style={{borderLeft: '6px solid #4d0000', backgroundColor: '#990505', color: 'black' ,marginBottom:"0px"  }}>View {name} Recent Reviews </h3>
+                    <h3 style={{borderLeft: '6px solid #4d0000', backgroundColor: '#990505', color: 'white' ,marginBottom:"0px"  }}>View {name} Recent Reviews </h3>
                     <Jumbotron style={{height:'100%',
                 Width: '100vw',
                backgroundImage: "url(" + '/content/grey2.jpg' + ")",
@@ -246,19 +360,22 @@ function Profile({email2}) {
                 backgroundSize: '100%',
                 backgroundRepeat: 'repeat',
                 backgroundHeight: '100%',}}>
+                  <Button onClick={()=>SetSentimentsl("Positive")} size="lg" style={{marginLeft:'20%',borderRadius:'22px',height: '15%', backgroundColor:selectedSentiment=="Positive"?"#260033":'#990505'}}><FontAwesomeIcon icon={faGrinAlt}  color="white" /> Positive</Button>
+                  <Button onClick={()=>SetSentimentsl("Neutral")} size="lg" style={{marginLeft:'20%',borderRadius:'22px',height: '15%', backgroundColor:selectedSentiment=="Neutral"?"#260033":'#990505'}}><FontAwesomeIcon icon={faSmile}  color="white" /> Neutral</Button>
+                  <Button onClick={()=>SetSentimentsl("Negative")} size="lg" style={{marginLeft:'20%',borderRadius:'22px',height: '15%', backgroundColor:selectedSentiment=="Negative"?"#260033":'#990505'}}><FontAwesomeIcon icon={faAngry}  color="white" /> Negative</Button>
                         {items.map(item=>(<div style={{marginLeft: '35%', marginRight: '35%'}} key={item._id}><MDBRow>
               <MDBCol>
                 <MDBCard news className="my-5">
                   <MDBCardBody>
                     <div className="content">
                     <img
-                        src={'/content/'+item.userpropic}
+                        src={'/content/'+item.userid.propic}
                         alt=""
                         height={40}
                         className="rounded-circle avatar-img z-depth-1-half"
                       />
-                      <a href={'/profile/'+item.userid}>{item.user}</a>{item.user===email2?<button style={{float:"right"}} onClick={()=>handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt}  color="red" /></button>:null}
-                      <div className="left-side-meta">{item.date}</div>
+                      <a style={{marginLeft:'2%'}} href={'/profile/'+item.userid._id}>{item.userid.firstname+' '+item.userid.lastname}</a>{item.userid.email===email2?<button style={{float:"right"}} onClick={()=>handleDelete(item._id)}><FontAwesomeIcon icon={faTrashAlt}  color="red" /></button>:null}
+                      <div className="left-side-meta"><a href={'/review/'+item._id}>{item.date}...</a></div>
                       
                     </div>
                   </MDBCardBody>
@@ -270,15 +387,33 @@ function Profile({email2}) {
                       <p>Tag: {item.tag}</p>
                       <p>{item.review}</p>
                       <span>
-                          <Button variant="primary" size="sm" onClick={()=>handleLikes(item._id)}  style={{marginRight:"50%"}} active>{item.likes} Upvote
-                          </Button>
-                          <Button variant="primary" size="sm" onClick={()=>handleDislikes(item._id)} active>{item.dislikes} Downvote
-                          </Button>
+                      {isindislikedby(item.dislikedBy)?null:<Button variant="primary" size="sm" onClick={()=>handleLikes(item._id)}  style={{marginRight:"50%"}} active>{item.likes} {isinlikedby(item.likedBy)?"UnUpvote":"Upvote"} 
+                          </Button>}
+                          {isinlikedby(item.likedBy)?null:<Button variant="primary" size="sm" onClick={()=>handleDislikes(item._id)} active>{item.dislikes} {isindislikedby(item.dislikedBy)?"UnDownvote":"Downvote"}
+                          </Button>}
                 
               </span>
                     </div>
+                    {item.comments.map(comment=>(
+                <div style={{backgroundColor:'#f2f4f6', marginTop:'1%'}}>
+                  <img
+                  src={'/content/'+comment.user.propic}
+                  alt=""
+                  height={40}
+                  
+                  className="rounded-circle avatar-img z-depth-1-half"
+                  />
+                  <a href={'/profile/'+comment.user._id}>{comment.user.firstname+' '+comment.user.lastname}</a>
+                  
+                  <a>{': '+comment.text}</a>
+                </div>
+                
+              
+            ))}
                     <hr />
-                    <MDBInput far icon="heart" hint="Add Comment..."  />
+                    <MDBInput far icon="heart" hint="Add Reply..." onChange={e => onChange(e,item._id)} />
+                    <Button variant="primary" size="sm" onClick={()=>postComment(item._id)} style={{marginLeft:"85%"}} active> Reply
+                    </Button>
                   </MDBCardBody>
                 </MDBCard>
               </MDBCol>
@@ -294,7 +429,7 @@ function Profile({email2}) {
             :null}
             </div>
         </div>
-    )
+    )}
 }
 
 export default Profile

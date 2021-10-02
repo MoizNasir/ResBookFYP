@@ -21,6 +21,10 @@ import axios from 'axios'
 import ShowFriends from './ShowFriends';
 import FriendsTab from './FriendsTab';
 import LoginForm2 from './LoginForm2';
+import Review from './Review';
+import ForgetPassword from './ForgetPassword';
+import ResetPassword from './ResetPassword';
+import SearchedUsers from './SearchedUsers';
 const data = JSON.parse(localStorage.getItem('data'))
 console.log("Local Storage: ",data)
 function NavBar() {
@@ -29,7 +33,7 @@ function NavBar() {
   const [islogged, setIslogged] = useState(data?"true":"false");
   const [userID, setUserID] = useState(data?data.id:0);
   const [userPic, setUserPic] = useState(data?data.propic:0);
-  
+  const [friends, setFriends] = useState(data?data.friends:[])
   const [inputvalue, setInputvalue]= useState("")
   const [test, setTest]= useState(null)
   
@@ -70,26 +74,34 @@ function NavBar() {
                       :null
                       } */}
                       
-                      <ShowReviews test={test} islogged={islogged} email2={email2}/>
+                      <ShowReviews test={test} userID={userID} islogged={islogged} email2={email2}/>
                       </Route>
                       
                          <Route path="/sign-in" >
-                        <LoginForm  setEmail2={setEmail2} setUserPic={setUserPic} setUserID={setUserID} setIslogged={setIslogged} setUser2={setUser2} user2={user2}/>
+                        <LoginForm  setEmail2={setEmail2} setUserPic={setUserPic} setUserID={setUserID} setIslogged={setIslogged} setUser2={setUser2} setFriends={setFriends} user2={user2}/>
                          </Route>
                          
                       <Route path="/sign-up" component={SignupForm} />
                       
                       <Route path="/restaurant/:placeid" >
-                        <Restaurantprofile email2={email2} userID={userID} islogged={islogged}  inputvalue={inputvalue} />
+                        <Restaurantprofile email2={email2} userID={userID} islogged={islogged} inputvalue={inputvalue} />
                       </Route>
                       <Route path="/profilesetting" >
                         <EditProfile email2={email2} />
                       </Route>
+                      <Route path="/forgetpassword" component={ForgetPassword}/>
+                      <Route path="/reset/:token" component={ResetPassword}/>
+                      <Route path="/review/:reviewid" >
+                        <Review email2={email2} userID={userID} />
+                      </Route>
                       <Route path="/myfriends" >
                         <FriendsTab id={userID} islogged={islogged} />
                       </Route>
+                      <Route path="/search/:query" >
+                        <SearchedUsers id={userID} islogged={islogged} />
+                      </Route>
                       <Route path="/profile/:id" >
-                        <Profile email2={email2}></Profile>
+                        <Profile email2={email2} userID={userID}></Profile>
                       </Route>
                     </Switch>
                     
